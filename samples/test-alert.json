@@ -1,0 +1,12 @@
+{
+  "schemaId": "AzureMonitorMetricAlert",
+  "data": {
+    "essentials": {
+      "alertRule": "CPU High",
+      "severity": "Sev3",
+      "signalType": "Metric",
+      "description": "Average CPU > 80% for 5 minutes",
+      "alertContext": { "portalLink": "https://portal.azure.com/#blade/Microsoft_Azure_Monitoring/..." }
+    }
+  }
+}

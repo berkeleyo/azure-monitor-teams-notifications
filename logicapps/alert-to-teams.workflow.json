@@ -1,0 +1,51 @@
+{
+  "definition": {
+    "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+      "teamsWebhookUrl": { "type": "string" }
+    },
+    "triggers": {
+      "When_an_HTTP_request_is_received": {
+        "type": "Request",
+        "kind": "Http",
+        "inputs": { "schema": { "type": "object" } }
+      }
+    },
+    "actions": {
+      "Compose_Card": {
+        "type": "Compose",
+        "inputs": {
+          "type": "message",
+          "attachments": [{
+            "contentType": "application/vnd.microsoft.card.adaptive",
+            "content": {
+              "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+              "type": "AdaptiveCard",
+              "version": "1.4",
+              "body": [
+                { "type": "TextBlock", "size": "Large", "weight": "Bolder", "text": "@{coalesce(triggerBody()?['essentials']?['alertRule'], 'Azure Alert')}" },
+                { "type": "TextBlock", "text": "Severity: @{coalesce(triggerBody()?['essentials']?['severity'], 'N/A')} • Signal: @{coalesce(triggerBody()?['essentials']?['signalType'], 'N/A')}" },
+                { "type": "TextBlock", "wrap": true, "text": "@{coalesce(triggerBody()?['essentials']?['description'], 'No description')}" }
+              ],
+              "actions": [
+                { "type": "Action.OpenUrl", "title": "Open in Azure", "url": "@{coalesce(triggerBody()?['essentials']?['alertContext']?['portalLink'], 'https://portal.azure.com')}" }
+              ]
+            }
+          }]
+        }
+      },
+      "POST_to_Teams_Webhook": {
+        "type": "Http",
+        "runAfter": { "Compose_Card": [ "Succeeded" ] },
+        "inputs": {
+          "method": "POST",
+          "uri": "@parameters('teamsWebhookUrl')",
+          "headers": { "Content-Type": "application/json" },
+          "body": "@outputs('Compose_Card')"
+        }
+      }
+    },
+    "outputs": {}
+  }
+}
