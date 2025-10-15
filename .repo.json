@@ -1,0 +1,9 @@
+{
+  "description": "Azure Monitor action groups and alerting pipelines that post to Microsoft Teams.",
+  "topics": [
+    "azure-monitor",
+    "teams",
+    "automation"
+  ],
+  "created": "2025-10-15"
+}
