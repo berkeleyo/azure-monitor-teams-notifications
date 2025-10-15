@@ -1,8 +1,14 @@
+# azure-monitor-teams-notifications
+
+Azure Monitor action groups and alerting pipelines that post to Microsoft Teams.
+
+## Getting started
+- Clone and explore.
+- Use the CI workflows as examples.
+
+
+---
 
 # Azure Monitor → Teams Notifications
 
-Deploy an Action Group that posts alerts to a Teams channel via an **Incoming Webhook**.
-
-```bash
-az deployment sub create -l uksouth -f bicep/actionGroupTeams.bicep -p groupName=ag-teams webhookUri=<secret>
-```
+Logic App scaffolding to send alerts to Teams connector with payload size guard.
